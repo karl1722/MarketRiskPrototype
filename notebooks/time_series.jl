@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.0
+# v0.18.0
 
 using Markdown
 using InteractiveUtils
@@ -7,33 +7,35 @@ using InteractiveUtils
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
     quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
 end
 
+# ╔═╡ f1cafb42-b73d-46ec-a9ab-6ec66c841cb0
+begin
+    import Pkg
+    # activate a temporary environment
+    Pkg.activate(mktempdir())
+    Pkg.add(url= "https://github.com/lungben/MarketRiskPrototype")
+    using MarketRiskPrototype
+end
+
 # ╔═╡ 214b7040-5424-11eb-20a0-3316520c333e
 begin
-	import Pkg
-	Pkg.activate(mktempdir())
-	# Pkg.add("Revise")
-	# using Revise
-	
-	Pkg.add(["DataFrames", "CSV", "TableIO", "Curves", "PlutoUI", "Plots", "ZipFile",  "ShiftedArrays", "Statistics", "Distributions", "CurrencyAmounts"])
 	
 	using DataFrames, CSV, TableIO, Curves, Dates, PlutoUI, Plots, ShiftedArrays, Statistics, Distributions
 	plotly()
+	import ZipFile
 	
 	using CurrencyAmounts
 	const EUR = Currency(:EUR)
 	const USD = Currency(:USD)
 	const DKK = Currency(:DKK)
 	const SEK = Currency(:SEK)
-	const NOK = Currency(:NOK)
-	
-	Pkg.add(Pkg.PackageSpec(url="https://github.com/lungben/MarketRiskPrototype.git"))
-	using MarketRiskPrototype
+	const NOK = Currency(:NOK)	
 end
 
 # ╔═╡ ac41d630-54e2-11eb-3dde-f374a3e297c7
@@ -52,14 +54,14 @@ For this example, a portfolio of cash-settled FX Forwards is used.
 
 Cash-settled FX Forwards are rather simple products because they only have a single cashflow at maturity $T$:
 
-\begin{equation}
+``
 CF(T) = Notional \cdot \left( FX_{contractual}(T) - FX(T) \right)
-\end{equation}
+``
 
 Thus, the present value at $t < T$ is:
-\begin{equation}
+``
 PV(t) = Notional \cdot \left( FX_{contractual}(T) - FX(t, T) \right) \cdot df(t, T)
-\end{equation}
+``
 
 Where $FX(t, T)$ is the FX forward rate and $df(t, T)$ the discount factor from $t$ to $T$.
 """
@@ -462,3 +464,4 @@ md"""
 # ╠═51c23a30-54d6-11eb-1895-b14d3e404c57
 # ╟─cbe7d790-51c8-11eb-1178-f5f8b9c59122
 # ╠═214b7040-5424-11eb-20a0-3316520c333e
+# ╠═f1cafb42-b73d-46ec-a9ab-6ec66c841cb0
