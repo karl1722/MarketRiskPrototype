@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.18.0
+# v0.19.13
 
 using Markdown
 using InteractiveUtils
@@ -17,10 +17,8 @@ end
 # ╔═╡ f1cafb42-b73d-46ec-a9ab-6ec66c841cb0
 begin
     import Pkg
-    # activate a temporary environment
-    Pkg.activate(mktempdir())
-    Pkg.add(url= "https://github.com/lungben/MarketRiskPrototype")
-    using MarketRiskPrototype
+    Pkg.activate(Base.current_project())    
+	using MarketRiskPrototype
 end
 
 # ╔═╡ 214b7040-5424-11eb-20a0-3316520c333e
@@ -28,7 +26,7 @@ begin
 	
 	using DataFrames, CSV, TableIO, Curves, Dates, PlutoUI, Plots, ShiftedArrays, Statistics, Distributions
 	plotly()
-	import ZipFile
+	
 	
 	using CurrencyAmounts
 	const EUR = Currency(:EUR)
